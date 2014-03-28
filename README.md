@@ -25,4 +25,4 @@ For npm:
 Caveats
 ---------
 
-Currently, we expect you to list virtualenv
+Currently, we expect you to list virtualenv in your requirements.txt
