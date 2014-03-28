@@ -1,6 +1,7 @@
 CURRENT_PACKAGE = $(PWD)
 PARENT_PACKAGE = $(PWD)/..
 BUILD_DIR = $(CURRENT_PACKAGE)/build
+EXPORT_DIR = $(CURRENT_PACKAGE)/export
 
 NPM_MASTER = http://registry.npmjs.org/
 NPM_MANIFESTS = $(PARENT_PACKAGE)/package.json
@@ -40,15 +41,19 @@ mirror-dirs: npm-mirror-dir pip-mirror-dir
 mirror-deps: pip-mirror-deps npm-mirror-deps
 
 build-dir:
-	-d $(BUILD_DIR) || mkdir $(BUILD_DIR)
+	test -d $(BUILD_DIR) || mkdir $(BUILD_DIR)
+export-dir:
+	test -d $(EXPORT_DIR) || mkdir $(EXPORT_DIR)
 
 unpacked-virtualenv: build-dir pip-mirror-deps
 	tar xvf $(PIP_MIRROR_PATH)/virtualenv-*.tar.* -C $(BUILD_DIR)
+built-virtualenv: unpacked-virtualenv export-dir
+	cp -rf $(BUILD_DIR)/virtualenv-* export/virtualenv
 
 # Reserve the right to do more with this if we find that setuptools
 # Doesn't work for something and we actually need distribute
 # As has happened on another project
-bootstrap-python: unpacked-virtualenv
+bootstrap-python: built-virtualenv
 
 clean-npm-mirror:
 	rm -Rf $(NPM_MIRROR_PATH)
