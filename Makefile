@@ -62,5 +62,5 @@ clean-pip-mirror:
 clean-mirrors: clean-npm-mirror clean-pip-mirror
 
 clean:
-	rm -Rf $(BUILD_DIR)
+	rm -Rf $(BUILD_DIR) $(EXPORT_DIR)
 
